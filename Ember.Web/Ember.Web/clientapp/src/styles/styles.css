@@ -1,0 +1,73 @@
+body,
+html {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+  color: #2c3e50;
+}
+
+.padding-none {
+  padding: 0;
+}
+
+/* header */
+.header {
+  z-index: 100;
+  position: fixed;
+  width: 100%;
+  top: 0;
+}
+.nav-item > a:not(.external).router-link-active,
+.nav-item > a:not(.external):hover {
+  color: #fff !important;
+  margin-bottom: -2px;
+  border-bottom: 2px solid #46bd87;
+}
+.navbar {
+  z-index: 20;
+  right: 0;
+  height: 3.6rem;
+  background-color: #fff;
+  box-sizing: border-box;
+  border-bottom: 1px solid #eaecef;
+}
+.body {
+  padding: 56px 0;
+  font-size: small;
+}
+
+/* что бы toast не уменьшался */
+.b-toast {
+  min-width: 350px;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.title {
+  text-align: center;
+  font-weight: bold;
+}
+
+:active,
+:hover,
+:focus {
+  outline: 0 !important;
+  outline-color: transparent !important;
+  outline-width: 0 !important;
+  outline-style: none !important;
+  box-shadow: 0 0 0 0 rgba(0, 123, 255, 0) !important;
+  outline-offset: 0 !important;
+}
+
+.one-page-top {
+  margin-top: 1.5rem;
+}
