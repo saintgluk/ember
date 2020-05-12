@@ -30,5 +30,16 @@ module.exports = {
     'no-unused-vars': ['error', { vars: 'all', args: 'after-used', ignoreRestSiblings: false }],
     'eol-last': 0, // убирает перенос строки в конце файла
     'object-curly-spacing': ['error', 'always'],
+    'spaced-comment': ["error", "always", {
+      "line": {
+          "markers": ["/"],
+          "exceptions": ["-", "+"]
+      },
+      "block": {
+          "markers": ["!"],
+          "exceptions": ["*"],
+          "balanced": true
+      }
+    }]
   },
 };
