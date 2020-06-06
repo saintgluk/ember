@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NLog.Web;
 
 namespace Ember.Web
 {
@@ -15,18 +12,20 @@ namespace Ember.Web
     {
         public static void Main(string[] args)
         {
+            var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             try
             {
-                //Log.Information("Application start Up.");
+                logger.Info("Application start Up.");
                 CreateHostBuilder(args).Build().Run();
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                //Log.Fatal(e, "The application failed to start correctly.");
+                logger.Fatal(exception, "The application failed to start correctly.");
+                throw;
             }
             finally
             {
-                //Log.CloseAndFlush();
+                NLog.LogManager.Shutdown();
             }
         }
 
@@ -39,6 +38,11 @@ namespace Ember.Web
                         .UseContentRoot(Directory.GetCurrentDirectory())
                         .UseIISIntegration()
                         .UseStartup<Startup>();
-                });
+                }).ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                })
+                .UseNLog();
     }
 }
