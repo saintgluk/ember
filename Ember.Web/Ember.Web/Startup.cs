@@ -6,11 +6,15 @@ using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Ember.Web.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using VueCliMiddleware;
 
 namespace Ember.Web
@@ -69,7 +73,7 @@ namespace Ember.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             this.AutofacContainer = app.ApplicationServices.GetAutofacRoot();
             app.UseSwagger();
@@ -87,6 +91,15 @@ namespace Ember.Web
             app.UseHttpsRedirection();
 
             app.UseSpaStaticFiles();
+            app.UseExceptionHandler(a => a.Run(async context =>
+            {
+                var feature = context.Features.Get<IExceptionHandlerPathFeature>();
+                var exception = feature.Error;
+                logger.LogError(exception, "An unexpected unhandled error has occurred.");
+                var result = JsonConvert.SerializeObject(new { error = exception.Message });
+                context.Response.ContentType = "application/json";
+                await context.Response.WriteAsync(result);
+            }));
             app.UseRouting();
             app.UseAuthorization();
 
