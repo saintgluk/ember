@@ -4,7 +4,9 @@ import VueRouter from 'vue-router';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 
 import loader from './utils/Loader';
-import routes from './routes';
+// import routes from './routes';
+import { router } from './routes';
+import { store } from './_store/index';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
@@ -18,14 +20,15 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(VueRouter);
 
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
-});
+// const router = new VueRouter({
+//   mode: 'history',
+//   base: process.env.BASE_URL,
+//   routes
+// });
 
 new Vue({
   router,
+  store,
   render: (h) => h(App)
 }).$mount('#app');
 

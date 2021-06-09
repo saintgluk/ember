@@ -13,7 +13,16 @@
       </b-navbar>
     </div>
     <div class="body">
-      <router-view />
+      <div class="jumbotron">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6 offset-sm-3">
+              <div v-if="alert.message" :class="`alert ${alert.type}`">{{alert.message}}</div>
+              <router-view></router-view>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -28,8 +37,18 @@ export default {
       isProductionTip: process.env.NODE_ENV === 'production'
     };
   },
+  computed: {
+    alert() {
+      return this.$store.state.alert;
+    }
+  },
+  watch: {
+    // eslint-disable-next-line no-unused-vars
+    $route(to, from) {
+      // clear alert on location change
+      this.$store.dispatch('alert/clear');
+    }
+  }
 };
 </script>
 
-<style scoped>
-</style>
